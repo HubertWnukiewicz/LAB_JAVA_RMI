@@ -9,6 +9,6 @@ public interface IServer extends Remote {
 
     Result solve(Instance instance) throws RemoteException;
 
-    int addition(int x) throws RemoteException;
+    String getName() throws RemoteException;
 
 }

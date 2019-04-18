@@ -33,8 +33,9 @@ public class Spis implements IRegister{
     public boolean register(OS os) throws RemoteException {
         if(os!=null)
         {
-            System.out.println("Poprawnie dodano serwer do listy");
+            System.out.println("Available servers:");
             registeredServers.add(os);
+            printAllServers();
             if(registeredServers.contains(os))
                 return true;
         }
@@ -45,10 +46,21 @@ public class Spis implements IRegister{
     public ArrayList<OS> getServers() throws RemoteException {
         return registeredServers;
     }
+    public static void main(String[] args){
+        Spis spis=new Spis();
 
+    }
     public ArrayList<OS> getRegisteredServers() {
         return registeredServers;
     }
+    public void printAllServers()
+    {
+        for(int j=0;j<this.getRegisteredServers().size();j++)
+        {
+            System.out.println(this.getRegisteredServers().get(j).name);
+        }
+    }
 }
+
 
 

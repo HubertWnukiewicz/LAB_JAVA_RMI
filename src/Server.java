@@ -19,7 +19,7 @@ public class Server implements  IServer {
     private OS os;
 
 
-    public Server(String name ) throws RemoteException, AlreadyBoundException {
+    public Server(String name,String description ) throws RemoteException, AlreadyBoundException {
         System.out.println("Server is up");
         bf = new BruteForce();
         dp = new DynamicProgramming();
@@ -32,7 +32,7 @@ public class Server implements  IServer {
             Registry registry = LocateRegistry.getRegistry(Registry.REGISTRY_PORT);
             registry.bind(name, this);
             registers =(IRegister) registry.lookup("Spis");
-            os=new OS(name,"BruteForce Solution");
+            os=new OS(name,description);
             registers.register(os);
         } catch (AlreadyBoundException | IOException e) {
             e.printStackTrace();
@@ -52,8 +52,19 @@ public class Server implements  IServer {
     }
 
     @Override
-    public int addition(int x) throws RemoteException {
-        System.out.println("Metoda wywolana");
-        return x*5;
+    public String getName() throws RemoteException {
+        return os.name;
+    }
+    public static void main(String[] args) throws AlreadyBoundException, RemoteException {
+        Server server=new Server("SERVER_2","BruteForce Solution");
+
+    }
+
+    public OS getOs() {
+        return os;
+    }
+
+    public void setOs(OS os) {
+        this.os = os;
     }
 }

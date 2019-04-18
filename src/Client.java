@@ -1,4 +1,5 @@
 import knapsack.Instance;
+import knapsack.Item;
 import knapsack.Result;
 
 import javax.swing.*;
@@ -8,6 +9,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class Client implements IClient{
     private IServer server;
@@ -38,17 +41,59 @@ public class Client implements IClient{
 
     @Override
     public void getAllServers() throws RemoteException {
-        id=server.addition(10);
-        System.out.println(id);
+        for(int i=0;i<registers.getServers().size();i++)
+        {
+            System.out.println(registers.getServers().get(i).name);
+        }
 
     }
-    public void solveInstance(Instance instance ) throws RemoteException {
+    public void solveInstance() throws RemoteException {
+        System.out.println("Rozwiązuje: "+server.getName());
+        Instance instance=createRandomInstance();
         Result result=server.solve(instance);
+
         for (int i=0;i<result.getItems().size();i++)
         {
             System.out.println(result.getItems().get(i).getWeight());
         }
-        System.out.println("Value: "+result.calculateFinalValue());
+        System.out.println("Final Value: "+result.calculateFinalValue());
     }
+    private Instance createRandomInstance(){
+        Random random=new Random();
+        ArrayList<Item> products=createRandomProducts();
+        int size=random.nextInt(85)+5;
+        Instance instance=new Instance(size,products);
 
+        return instance;
+    }
+    private ArrayList<Item> createRandomProducts(){
+        Random random=new Random();
+        int numberOfItems=random.nextInt(12)+2;
+        ArrayList<Item> products=new ArrayList<>();
+        for(int i=0;i<numberOfItems;i++)
+        {
+            float value=random.nextFloat()+2;
+            int weight=random.nextInt(20)+2;
+            Item item=new Item(weight,value);
+            System.out.println("Weight: "+item.getWeight());
+            System.out.println("Value: "+item.getValue());
+            products.add(item);
+
+        }
+        return products;
+    }
+    public void changeServer(String name) throws RemoteException, NotBoundException {
+
+        Registry registry = LocateRegistry.getRegistry(Registry.REGISTRY_PORT);
+        server = (IServer) registry.lookup(name);
+    }
+    public static void main(String[] args) throws RemoteException, NotBoundException {
+        Client client=new Client("SERVER_1");
+        client.solveInstance();
+        client.changeServer("SERVER_2");
+        client.solveInstance();
+        client.getAllServers();
+
+
+    }
 }

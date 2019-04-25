@@ -45,18 +45,52 @@ public class Server implements  IServer {
 
 
     @Override
-    public Result solve(Instance instance) throws RemoteException {
+    public Result solve(Instance instance,int alg) throws RemoteException {
         Result result=new Result();
-        result=bf.StartAlgorithm(instance);
+        if(alg==0) {
+            System.out.println("USED: Brute Force");
+            result=bf.StartAlgorithm(instance);
+        }
+        else if(alg==1){
+            System.out.println("USED: Random Selection");
+            result=rs.StartAlgorithm(instance);
+        }
+        else if(alg==2){
+            System.out.println("USED: Greedy Solution");
+            result=gs.StartAlgorithm(instance);
+        }
+        else if(alg==3){
+            System.out.println("USED: Dynamic Programming");
+            result=bf.StartAlgorithm(instance);
+        }
+        else{
+            System.out.println("USED: Brute Force2");
+            result=bf.StartAlgorithm(instance);
+        }
         return result;
+    }
+    public void getListOfImplementedAlgorithms() throws RemoteException{
+        System.out.println("0. Brute force. ");
+        System.out.println("1. Random selection. ");
+        System.out.println("2. Greedy solution. ");
+        System.out.println("3. Dynamic programming. ");
     }
 
     @Override
     public String getName() throws RemoteException {
         return os.name;
     }
+
+    @Override
+    public String getDescription() throws RemoteException {
+        return os.description;
+    }
     public static void main(String[] args) throws AlreadyBoundException, RemoteException {
-        Server server=new Server("SERVER_2","BruteForce Solution");
+        String name="SERVER_2";
+        String description="Description2";
+        Server server=new Server(name,description);
+        System.out.println("NAME: "+name);
+        System.out.println("DESCRIPTION: "+description);
 
     }
 

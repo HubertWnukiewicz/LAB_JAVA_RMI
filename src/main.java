@@ -11,7 +11,7 @@ public class main {
     public static void main(String[] args) throws AlreadyBoundException, RemoteException {
 
         Client client2=new Client("SERVER_1");
-        client2.solveInstance();
+        client2.solveInstance(2);
 
         //System.out.println("PO2: "+ spis.getRegisteredServers().size());
 

@@ -7,8 +7,12 @@ import java.util.ArrayList;
 
 public interface IServer extends Remote {
 
-    Result solve(Instance instance) throws RemoteException;
+    Result solve(Instance instance,int alg) throws RemoteException;
 
     String getName() throws RemoteException;
+
+    String getDescription() throws  RemoteException;
+
+    void getListOfImplementedAlgorithms() throws RemoteException;
 
 }
